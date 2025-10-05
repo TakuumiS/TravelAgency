@@ -1,6 +1,6 @@
 package com.d288.d288.config;
 
-import edu.wgu.d288_backend.entities.*;
+import com.d288.d288.entities.*;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
