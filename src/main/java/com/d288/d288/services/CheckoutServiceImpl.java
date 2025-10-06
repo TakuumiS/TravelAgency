@@ -37,7 +37,8 @@ public class CheckoutServiceImpl implements CheckoutService{
 
         //populate order with CartItems
         Set<CartItem> cartItems = purchase.getCartItems();
-        cartItems.forEach(item -> cart.add(item));
+        cartItems.forEach(cart::add);
+
 
         //populate customer with cart
         Customer customer = purchase.getCustomer();
@@ -46,7 +47,7 @@ public class CheckoutServiceImpl implements CheckoutService{
         cart.setStatus(StatusType.ordered);
         //save to db
         cartRepository.save(cart);
-        customerRepository.save(customer);
+        //customerRepository.save(customer);
 
         //return a response
         return new PurchaseResponse(orderTrackingNumber);
