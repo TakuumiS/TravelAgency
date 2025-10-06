@@ -27,9 +27,9 @@ public class Cart {
     @Column(name = "party_size")
     private int party_size;
 
-    @Column(name = "status")
+    @Column(name="status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private StatusType.CartStatus status = StatusType.CartStatus.pending;
+    private StatusType status;
 
     @Column(name = "order_tracking_number")
     private String orderTrackingNumber;
@@ -47,7 +47,7 @@ public class Cart {
     private Customer customer;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart")
-    private Set<CartItem> cartItems;
+    private Set<CartItem> cartItems = new HashSet<>();
 
     public void add(CartItem item) {
         if (item != null) {

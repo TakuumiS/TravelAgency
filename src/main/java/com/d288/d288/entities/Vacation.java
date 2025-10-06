@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -42,6 +43,6 @@ public class Vacation {
     @UpdateTimestamp
     private Date last_update;
 
-    @OneToMany(mappedBy = "vacation", cascade = CascadeType.ALL)
-    private Set<Excursion> excursions;
+    @OneToMany(mappedBy = "vacation_title", cascade = CascadeType.ALL)
+    private Set<Excursion> excursions = new HashSet<>();
 }

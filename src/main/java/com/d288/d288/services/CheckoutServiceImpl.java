@@ -7,6 +7,7 @@ import com.d288.d288.entities.CartItem;
 import com.d288.d288.entities.Customer;
 import com.d288.d288.entities.StatusType;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -18,8 +19,10 @@ public class CheckoutServiceImpl implements CheckoutService{
     private CustomerRepository customerRepository;
     private CartRepository cartRepository;
 
-    public CheckoutServiceImpl(CartRepository cartRepository){
+    @Autowired
+    public CheckoutServiceImpl(CartRepository cartRepository, CustomerRepository customerRepository){
         this.cartRepository = cartRepository;
+        this.customerRepository = customerRepository;
     }
 
     @Override
@@ -28,22 +31,23 @@ public class CheckoutServiceImpl implements CheckoutService{
         //retrieve the cart info
         Cart cart = purchase.getCart();
 
-
         // generate tracking number
         String orderTrackingNumber = generateOrderTrackingNumber();
         cart.setOrderTrackingNumber(orderTrackingNumber);
 
         //populate order with CartItems
         Set<CartItem> cartItems = purchase.getCartItems();
-        cartItems.forEach(cart::add);
+        cartItems.forEach(item -> item.setCart(cart));
+        cartItems.forEach(item -> cart.add(item));
 
         //populate customer with cart
         Customer customer = purchase.getCustomer();
         customer.add(cart);
 
-        cart.setStatus(StatusType.CartStatus.ordered);
+        cart.setStatus(StatusType.ordered);
         //save to db
         cartRepository.save(cart);
+        customerRepository.save(customer);
 
         //return a response
         return new PurchaseResponse(orderTrackingNumber);
