@@ -43,6 +43,6 @@ public class Excursion {
     private Vacation vacation;
 
     @ManyToMany(mappedBy = "excursions")
-    private Set<CartItem> cart_items;
+    private Set<CartItem> cartItems;
 
 }
